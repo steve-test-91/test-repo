@@ -3,8 +3,10 @@ const axios = require('axios');
 
 const { envConfig } = require('../config');
 
+const sntryURL = process.env.LOCAL_SENTRY === '1' ? 'http://dev.getsentry.net:8000' : 'https://sentry.io';
+
 const sentryApi = axios.create({
-  baseURL: 'https://sentry.io',
+  baseURL: sntryURL,
   headers: { 'Content-Type': 'application/json' }
 });
 
@@ -86,6 +88,8 @@ Parse.Cloud.define('sentryOauth', async req => {
     client_id: envConfig.sentryClientID,
     client_secret: envConfig.sentryClientSecret
   };
+
+  console.log('\n\n\ payoad', payload, '\n\n');
 
   try {
     const { data } = await sentryApi.post(url, payload);
