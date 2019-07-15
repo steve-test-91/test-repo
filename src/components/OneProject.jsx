@@ -15,7 +15,7 @@ class Projects extends React.Component {
   }
 
   async loadIssues() {
-    Sentry.captureException(new Error('mang'))
+    Sentry.captureException(new Error('mang dddddd'))
     let issues = await api.getSentryIssues(this.projectSlug);
     issues = orderBy(
       issues,

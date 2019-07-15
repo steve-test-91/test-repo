@@ -10,7 +10,7 @@ import * as serviceWorker from './serviceWorker';
 
 
 Sentry.init({
-  dsn: 'https://39288570fd1e4d5fa42c8d06959ac98b@sentry.io/1499915'
+  dsn: process.env.REACT_APP_SENTRY_DSN
 });
 
 

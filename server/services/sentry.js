@@ -89,8 +89,6 @@ Parse.Cloud.define('sentryOauth', async req => {
     client_secret: envConfig.sentryClientSecret
   };
 
-  console.log('\n\n\ payoad', payload, '\n\n');
-
   try {
     const { data } = await sentryApi.post(url, payload);
     await sentryUserConfig.save(
