@@ -24,9 +24,7 @@ const handleWebhook = async (req, res) => {
   try {
     const { action, data } = req.body;
     const { issue } = data;
-    console.log('req.body', JSON.stringify(req.body));
     if (action === 'deleted') {
-      return;
       const { installation } = data;
       const orgSlug = installation.organization.slug;
       const sentryUserConfig = await new Parse.Query('SentryUserConfig')
