@@ -53,6 +53,8 @@ const handleWebhook = async (req, res) => {
     res.sendStatus(202);
   } catch (err) {
     console.error('err', err);
+    Sentry.captureException(new Error("ehllo"));
+    Sentry.captureException(err);
     res.sendStatus(500);
   }
 };
@@ -69,6 +71,12 @@ module.exports = app => {
 
   app.use('/parse', parseServer);
   app.use('/webhook', handleWebhook);
+
+
+  app.use('/webhook', (req, res) => {
+    console.log('lol what');
+    return res.sendStatus(201)
+  });
 
   app.use(express.static(path.join(__dirname, pathToBuild)));
   app.get('*', staticPage);

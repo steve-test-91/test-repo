@@ -1,7 +1,7 @@
 const { ParseServer } = require('parse-server');
 
 const envConfig = {
-  port: process.env.PORT || 5000,
+  port: process.env.PORT || 4000,
   masterKey: process.env.MASTER_KEY,
   sentryClientID: process.env.SENTRY_CLIENT_ID,
   sentryClientSecret: process.env.SENTRY_CLIENT_SECRET

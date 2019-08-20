@@ -43,7 +43,7 @@ const _rawMakeSentryRequest = async (sentryUserConfig, axiosParams) => {
   try {
     const { data } = await sentryApi.request(axiosParams);
     return data;
-  } catch(err) {
+  } catch (err) {
     console.error(_.get(err, 'response.data.status'));
     throw err;
   }
@@ -100,10 +100,7 @@ Parse.Cloud.define('sentryOauth', async req => {
 
   try {
     const { data } = await sentryApi.post(url, payload);
-
-    console.log('\n\n\n data from token', data, '\n\n');
-
-    await sentryUserConfig.set({
+    sentryUserConfig.set({
       refreshToken: data.refreshToken,
       accessToken: data.token,
       installationId,
@@ -119,16 +116,6 @@ Parse.Cloud.define('sentryOauth', async req => {
     });
 
     await sentryUserConfig.save(null, { useMasterKey: true });
-
-    // await sentryUserConfig.save(
-    //   {
-    //     refreshToken: data.refreshToken,
-    //     accessToken: data.token,
-    //     installationId,
-    //     orgSlug
-    //   },
-    //   { useMasterKey: true }
-    // );
 
     await user.save({ oauthComplete: true }, { useMasterKey: true });
 

@@ -16,13 +16,13 @@ export const sentryOauth = async params => {
   await Parse.Cloud.run('sentryOauth', params);
 };
 
-export const getSentryIssues = async (projectSlug) => {
+export const getSentryIssues = async projectSlug => {
   return await Parse.Cloud.run('sentryIssues', { projectSlug });
 };
 
-export const getSentryProjectInfo = async (projectSlug) => {
+export const getSentryProjectInfo = async projectSlug => {
   return await Parse.Cloud.run('sentryProjectInfo', { projectSlug });
-}
+};
 
 export const getSentryProjects = async () => {
   return await Parse.Cloud.run('sentryProjects');
