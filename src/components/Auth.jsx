@@ -5,17 +5,12 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import isEmail from 'validator/lib/isEmail';
 import { toast } from 'react-toastify';
-import queryString from 'query-string';
 import Parse from 'parse';
 
 import * as util from '../util';
 
 class Auth extends React.Component {
   state = {};
-  // constructor() {
-  //   super(...arguments);
-  //   autobind(this);
-  // }
 
   showError(message) {
     return toast.error(message, {
