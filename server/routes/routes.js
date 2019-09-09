@@ -10,7 +10,7 @@ const issues = require('../services/issues');
 require('../services/sentry');
 
 Sentry.init({
-  dsn: 'https://39288570fd1e4d5fa42c8d06959ac98b@sentry.io/1499915'
+  dsn: process.env.REACT_APP_SENTRY_DSN
 });
 
 const pathToBuild = '../../build';
@@ -20,7 +20,7 @@ const staticPage = (req, res) => {
   res.sendFile(indexPath);
 };
 
-const handleError = async (req, res) => {
+const handleWebhook = async (req, res) => {
   try {
     const { action, data } = req.body;
     const { issue } = data;
@@ -40,11 +40,12 @@ const handleError = async (req, res) => {
         .get('userPtr')
         .save({ oauthComplete: false }, { useMasterKey: true });
     } else if (issue) {
+      console.log('\n\n got issue', JSON.stringify(issue), '\n\n');
       const issueParams = _.omit(issue, ['id']);
       issueParams.sentryId = issue.id;
       let sentryIssue = await issues.findSentryIssue(issue.id);
       if (sentryIssue) {
-        await sentryIssue.save({ issueParams });
+        await sentryIssue.save({ issueParams }, { useMasterKey: true });
       } else {
         sentryIssue = await issues.createSentryIssue(issueParams);
       }
@@ -52,6 +53,8 @@ const handleError = async (req, res) => {
     res.sendStatus(202);
   } catch (err) {
     console.error('err', err);
+    Sentry.captureException(new Error("ehllo"));
+    Sentry.captureException(err);
     res.sendStatus(500);
   }
 };
@@ -67,12 +70,17 @@ module.exports = app => {
   });
 
   app.use('/parse', parseServer);
-  app.use('/webhook', handleError);
+  app.use('/webhook', handleWebhook);
+
+
+  app.use('/webhook', (req, res) => {
+    console.log('lol what');
+    return res.sendStatus(201)
+  });
 
   app.use(express.static(path.join(__dirname, pathToBuild)));
   app.get('*', staticPage);
- 
-   
+
   app.use(Sentry.Handlers.errorHandler());
 
   // Optional fallthrough error handler

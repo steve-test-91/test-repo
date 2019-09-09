@@ -1,12 +1,16 @@
 const Parse = require('parse/node');
 const axios = require('axios');
+const _ = require('lodash');
 
 const { envConfig } = require('../config');
 
-const sntryURL = process.env.LOCAL_SENTRY === '1' ? 'http://dev.getsentry.net:8000' : 'https://sentry.io';
+const sentryUrl =
+  process.env.LOCAL_SENTRY === '1'
+    ? 'http://dev.getsentry.net:8000'
+    : 'https://sentry.io';
 
 const sentryApi = axios.create({
-  baseURL: sntryURL,
+  baseURL: sentryUrl,
   headers: { 'Content-Type': 'application/json' }
 });
 
@@ -36,8 +40,13 @@ const _rawMakeSentryRequest = async (sentryUserConfig, axiosParams) => {
   axiosParams.headers = Object.assign({}, axiosParams.headers, {
     Authorization: `Bearer ${accessToken}`
   });
-  const { data } = await sentryApi.request(axiosParams);
-  return data;
+  try {
+    const { data } = await sentryApi.request(axiosParams);
+    return data;
+  } catch (err) {
+    console.error(_.get(err, 'response.data.status'));
+    throw err;
+  }
 };
 
 const refreshAndSaveToken = async sentryUserConfig => {
@@ -89,19 +98,24 @@ Parse.Cloud.define('sentryOauth', async req => {
     client_secret: envConfig.sentryClientSecret
   };
 
-  console.log('\n\n\ payoad', payload, '\n\n');
-
   try {
     const { data } = await sentryApi.post(url, payload);
-    await sentryUserConfig.save(
-      {
-        refreshToken: data.refreshToken,
-        accessToken: data.token,
-        installationId,
-        orgSlug
-      },
-      { useMasterKey: true }
-    );
+    sentryUserConfig.set({
+      refreshToken: data.refreshToken,
+      accessToken: data.token,
+      installationId,
+      orgSlug
+    });
+
+    await _rawMakeSentryRequest(sentryUserConfig, {
+      url: `api/0/sentry-app-installations/${installationId}/`,
+      method: 'PUT',
+      data: {
+        status: 'installed'
+      }
+    });
+
+    await sentryUserConfig.save(null, { useMasterKey: true });
 
     await user.save({ oauthComplete: true }, { useMasterKey: true });
 
@@ -134,8 +148,6 @@ Parse.Cloud.define('sentryProjects', async req => {
     url: `/api/0/organizations/${orgSlug}/projects/`
   });
 });
-
-
 
 Parse.Cloud.define('sentryProjectInfo', async req => {
   const {
