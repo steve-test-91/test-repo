@@ -77,11 +77,6 @@ module.exports = app => {
   app.get('/sentry/tasks', issues.handleTasks);
 
 
-  app.use('/webhook', (req, res) => {
-    console.log('lol what');
-    return res.sendStatus(201)
-  });
-
   app.use(express.static(path.join(__dirname, pathToBuild)));
   app.get('*', staticPage);
 
