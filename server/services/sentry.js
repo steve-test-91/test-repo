@@ -107,13 +107,13 @@ Parse.Cloud.define('sentryOauth', async req => {
       orgSlug
     });
 
-    await _rawMakeSentryRequest(sentryUserConfig, {
-      url: `api/0/sentry-app-installations/${installationId}/`,
-      method: 'PUT',
-      data: {
-        status: 'installed'
-      }
-    });
+    // await _rawMakeSentryRequest(sentryUserConfig, {
+    //   url: `api/0/sentry-app-installations/${installationId}/`,
+    //   method: 'PUT',
+    //   data: {
+    //     status: 'installed'
+    //   }
+    // });
 
     await sentryUserConfig.save(null, { useMasterKey: true });
 

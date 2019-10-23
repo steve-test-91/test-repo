@@ -26,7 +26,25 @@ const findSentryIssue = sentryId => {
     .first({ useMasterKey: true });
 };
 
+const handleLists = (req, res) => {
+  const { query } = req;
+  return res.send([
+    { label: 'option a', value: 'a' },
+    { label: 'option b', value: 'b' }
+  ]);
+};
+
+const handleTasks = (req, res) => {
+  const { query } = req;
+  return res.send([
+    { label: 'option a', value: 'a' },
+    { label: 'option b', value: 'b' }
+  ]);
+};
+
 module.exports = {
   createSentryIssue,
-  findSentryIssue
+  findSentryIssue,
+  handleTasks,
+  handleLists
 };

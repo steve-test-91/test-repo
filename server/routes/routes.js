@@ -72,6 +72,10 @@ module.exports = app => {
   app.use('/parse', parseServer);
   app.use('/webhook', handleWebhook);
 
+  // app.get('/sentry/create', issues.handleLists);
+  app.get('/sentry/lists', issues.handleLists);
+  app.get('/sentry/tasks', issues.handleTasks);
+
 
   app.use('/webhook', (req, res) => {
     console.log('lol what');

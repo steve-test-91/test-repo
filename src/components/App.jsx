@@ -1,22 +1,22 @@
-import React from 'react';
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect
-} from 'react-router-dom';
-import styled from 'styled-components';
-import { ToastContainer } from 'react-toastify';
-import Parse from 'parse';
-import Button from 'react-bootstrap/Button';
-import 'react-toastify/dist/ReactToastify.css';
+} from "react-router-dom";
+import styled from "styled-components";
+import { ToastContainer } from "react-toastify";
+import Parse from "parse";
+import Button from "react-bootstrap/Button";
+import "react-toastify/dist/ReactToastify.css";
 
-import Auth from './Auth';
-import Oauth from './Oauth';
-import Projects from './Projects';
-import OneProject from './OneProject';
+import Auth from "./Auth";
+import Oauth from "./Oauth";
+import Projects from "./Projects";
+import OneProject from "./OneProject";
 
-import * as util from '../util';
+import * as util from "../util";
 
 class App extends React.Component {
   get isLoggedIn() {
@@ -24,26 +24,27 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (window.location.pathname.startsWith('/projects')) {
-      if (! this.isLoggedIn) {
-        return util.relativeRedirect('/signup');
+    if (window.location.pathname.startsWith("/projects")) {
+      if (!this.isLoggedIn) {
+        return util.relativeRedirect("/signup");
       }
     }
   }
 
   logout() {
     Parse.User.logOut();
-    util.relativeRedirect('login', false);
+    util.relativeRedirect("login", false);
   }
 
   renderProjectsButton() {
-    if (!window.location.pathname.startsWith('/projects/')) {
+    if (!window.location.pathname.startsWith("/projects/")) {
       return null;
     }
     return (
-      <Button variant='outline-info'
+      <Button
+        variant="outline-info"
         onClick={() => {
-          util.relativeRedirect('/projects');
+          util.relativeRedirect("/projects");
         }}
       >
         Back to Projects
@@ -58,10 +59,7 @@ class App extends React.Component {
     return (
       <LogoutContainer>
         {this.renderProjectsButton()}
-        <Button
-          variant='outline-danger'
-          onClick={() => this.logout()}
-        >
+        <Button variant="outline-danger" onClick={() => this.logout()}>
           Logout
         </Button>
       </LogoutContainer>
@@ -69,18 +67,19 @@ class App extends React.Component {
   }
 
   render() {
-    const redirectUrl = '/projects';
+    const redirectUrl = "/projects";
+    throw new Error("catasdf");
     return (
       <Container>
         <ToastContainer />
         {this.renderAccountButtons()}
         <Router>
           <Switch>
-            <Route path='/signup' component={Auth} />
-            <Route path='/login' component={Auth} />
-            <Route path='/oauth' component={Oauth} />
-            <Route path='/projects/:projectSlug' component={OneProject} />
-            <Route path='/projects' component={Projects} />
+            <Route path="/signup" component={Auth} />
+            <Route path="/login" component={Auth} />
+            <Route path="/oauth" component={Oauth} />
+            <Route path="/projects/:projectSlug" component={OneProject} />
+            <Route path="/projects" component={Projects} />
             <Redirect to={redirectUrl} />
           </Switch>
         </Router>

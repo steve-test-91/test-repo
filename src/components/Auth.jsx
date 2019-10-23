@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import isEmail from 'validator/lib/isEmail';
 import { toast } from 'react-toastify';
 import Parse from 'parse';
+import * as Sentry from '@sentry/browser';
 
 import * as util from '../util';
 
@@ -88,6 +89,7 @@ class Auth extends React.Component {
   }
 
   render() {
+    Sentry.captureException(new Error('card'));
     const mainText = this.isLogin() ? 'Login' : 'Signup';
     const otherText = !this.isLogin() ? 'Login' : 'Signup';
     return (
