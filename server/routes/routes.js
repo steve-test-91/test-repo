@@ -10,7 +10,8 @@ const issues = require('../services/issues');
 require('../services/sentry');
 
 Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+  release: process.env.REACT_APP_SENTRY_RELEASE
 });
 
 const pathToBuild = '../../build';
