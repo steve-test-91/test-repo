@@ -68,7 +68,7 @@ class App extends React.Component {
 
   render() {
     const redirectUrl = "/projects";
-    throw new Error("aaaaaa");
+    throw new Error("3/11: 1");
     return (
       <Container>
         <ToastContainer />
