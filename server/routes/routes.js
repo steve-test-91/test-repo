@@ -73,10 +73,13 @@ module.exports = app => {
   app.use('/parse', parseServer);
   app.use('/webhook', handleWebhook);
 
-  // app.get('/sentry/create', issues.handleLists);
-  app.get('/sentry/lists', issues.handleLists);
-  app.get('/sentry/tasks', issues.handleTasks);
 
+  app.post('/integrations/sentry/issues/create', issues.createExternalIssue);
+  app.get('/integrations/sentry/projects', issues.handleProjects);
+  app.get('/integrations/sentry/boards', issues.handleBoards);
+  app.get('/integrations/sentry/lists', issues.handleLists);
+  app.get('/integrations/sentry/cards', issues.handleCards);
+  app.get('/integrations/sentry/stories', issues.handleStories);
 
   app.use(express.static(path.join(__dirname, pathToBuild)));
   app.get('*', staticPage);

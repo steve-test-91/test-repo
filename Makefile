@@ -1,11 +1,11 @@
-SENTRY_URL=https://scefali.ngrok.io
-SENTRY_ORG=sentry
-SENTRY_PROJECT=react
-VERSION=2-4-v2
-# SENTRY_URL=https://sentry.io
-# SENTRY_ORG=plugin-org
+# SENTRY_URL=https://scefali.ngrok.io
+# SENTRY_ORG=sentry
 # SENTRY_PROJECT=react
-# VERSION=`sentry-cli --url $(SENTRY_URL) releases propose-version`
+# VERSION=2-4-v2
+SENTRY_URL=https://sentry.io
+SENTRY_ORG=plugin-org
+SENTRY_PROJECT=react
+VERSION=`sentry-cli --url $(SENTRY_URL) releases propose-version`
 
 
 setup_release: create_release associate_commits upload_sourcemaps
